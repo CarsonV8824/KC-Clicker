@@ -2,11 +2,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: white;
+    background-color: rgb(175, 175, 175);
 }
 
 .header-dice-button-class {
-    background-color: white;
+    background-color: rgb(175, 175, 175);
     padding: 5px;
     text-align: center;
     font-size: 24px;
@@ -14,22 +14,12 @@ body {
 }
 
 .main-click-dice-button {
-    background-color: black;
-    color:white;
-    border:none;
-    padding:15px 30px;
-    font-size:20px;
-    cursor:pointer;
-    border-radius:5px;
-    transition: background-color 0.3s ease;
-}
-
-.main-click-dice-button:hover {
-    background-color: grey;
-}
-
-.main-click-dice-button:active {
-    background-color: blue;
+    width:150px;
+    height:150px;
+    background-image: url("/static/images/Dice_Image_KC_Clicker.png");
+    background-size: cover;
+    border:black solid 2px;
+    cursor: pointer;
 }
 
 .dice-count-class {
@@ -39,7 +29,7 @@ body {
 }
 
 .footer-class {
-    background-color: white;
+    background-color: rgb(175, 175, 175);
     padding: 10px;
     text-align: center;
     font-size: 14px;

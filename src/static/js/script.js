@@ -7,7 +7,7 @@ main_dice_button.addEventListener('click', () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ click: true })
+        body: JSON.stringify({ "click": true })
     })
     .then(response => response.json())
     .then(data => {
@@ -31,5 +31,15 @@ function updateDiceCount() {
     .catch(err => console.error('Error fetching dice count:', err));
 }
 
-setInterval(updateDiceCount, 5000); // Update every 5 seconds
-updateDiceCount(); // Initial call to set the count immediately
+setInterval(updateDiceCount, 100); 
+updateDiceCount(); 
+
+//Saving Data on Window Close
+window.addEventListener("beforeunload", () => {
+  const payload = JSON.stringify({
+    username: "test",
+    email: "test@example.com"
+  });
+
+  navigator.sendBeacon("/save-on-close", payload);
+});
