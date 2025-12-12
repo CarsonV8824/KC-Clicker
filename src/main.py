@@ -75,9 +75,6 @@ def save_on_close():
         stats=stats
     )
 
-    with open("tests/close_test.txt", "a") as f:
-        f.write(f"Saved data for {username} with email {email} and stats {stats}\n")
-
     return ("", 204)
 
 #---Running The App---#

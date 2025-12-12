@@ -1,2 +1,0 @@
-Saved data for guest with email none and stats {'money': 7, 'producers': {'39th street owned': 0, '$PerSec': 0, 'cost': 100}}
-Saved data for guest with email none and stats {'money': 7, 'producers': {'39th street owned': 0, '$PerSec': 0, 'cost': 100}}
