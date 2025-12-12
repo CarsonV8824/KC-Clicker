@@ -15,5 +15,12 @@ def get_dice_click_from_js():
     print(f"Received dice click data: {data}")  
     return jsonify({"status": "success", "message": "Dice click received successfully."})
 
+count = 0
+@app.route('/get_dice_info_from_py', methods=['GET'])
+def get_dice_info_from_py():
+    global count
+    count += 100  # or get from database
+    return jsonify({"count": count, "username": "Player1"})
+
 if __name__ == '__main__':
     app.run(debug=True)

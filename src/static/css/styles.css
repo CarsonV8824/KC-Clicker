@@ -32,6 +32,12 @@ body {
     background-color: blue;
 }
 
+.dice-count-class {
+    font-size: 18px;
+    margin-top: 20px;
+    color: black;
+}
+
 .footer-class {
     background-color: white;
     padding: 10px;
