@@ -12,10 +12,7 @@ def main():
 @app.route('/get_dice_click_from_js', methods=['POST'])
 def get_dice_click_from_js():
     data = request.get_json()
-
-    with open('../tests/dice_clicks_from_js.txt', 'a') as log_file:
-        log_file.write(f"{data}\n")
-    
+    print(f"Received dice click data: {data}")  
     return jsonify({"status": "success", "message": "Dice click received successfully."})
 
 if __name__ == '__main__':
