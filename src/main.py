@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route('/')
 def main():
     title = "KC-Clicker-Website"
-    header = "Welcome to KC-Monopoly-Clicker-Website"
+    header = "Welcome to KC-Clicker-Website"
     footer = "© 2025 Carson V"
     return render_template("index.html", title=title, header=header, footer=footer)
 

@@ -24,8 +24,12 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.main-click-button:hover {
+.main-click-dice-button:hover {
     background-color: grey;
+}
+
+.main-click-dice-button:active {
+    background-color: blue;
 }
 
 .footer-class {
