@@ -26,7 +26,7 @@ function updateDiceCount() {
   fetch('/get_dice_info_from_py')
     .then(res => res.json())
     .then(data => {
-      diceCountSpan.textContent = `${data.count} (User: ${data.username})`;
+      diceCountSpan.textContent = `${data.count} | ${data.username}'s Game`;
     })
     .catch(err => console.error('Error fetching dice count:', err));
 }
@@ -42,4 +42,24 @@ window.addEventListener("beforeunload", () => {
   });
 
   navigator.sendBeacon("/save-on-close", payload);
+});
+
+//39th Street Button
+const thirtyNinthStreetButton = document.getElementById('39th_street_button');
+
+thirtyNinthStreetButton.addEventListener('click', () => {
+    fetch('/get_39th_street_button_click_from_js', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "buy": true })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('39th Street purchase attempt:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 });

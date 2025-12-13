@@ -35,10 +35,12 @@ def main():
     title = "KC-Clicker-Website"
     header = "Welcome to KC-Clicker-Website"
     footer = "© 2025 Carson V"
+    thirty_nine_street_button = "39th Street owned: " + str(game_state.game_state["producers"]["39th street owned"]) + " | Cost: " + str(game_state.game_state["producers"]["cost"])
     
     money = game_state.game_state["money"]
+    money_per_sec = game_state.game_state["money_per_sec"]
     
-    return render_template("index.html", title=title, header=header, footer=footer, money=money)
+    return render_template("index.html", title=title, header=header, footer=footer, money=money, money_per_sec=money_per_sec, thirty_nine_street_button=thirty_nine_street_button)
 
 @app.route('/get_dice_click_from_js', methods=['POST'])
 def get_dice_click_from_js():
@@ -55,7 +57,28 @@ def get_dice_click_from_js():
 
 @app.route('/get_dice_info_from_py', methods=['GET'])
 def get_dice_info_from_py():
-    return jsonify({"count": game_state.game_state["money"], "username": "Player1"})
+    return jsonify({"count": game_state.game_state["money"], "username": game_state.game_state["username"]})
+
+@app.route('/get_39th_street_button_click_from_js', methods=['POST'])
+def get_39th_street_button_click_from_js():
+    
+    data = request.get_json()
+    
+    cost = game_state.game_state["producers"]["cost"]
+    
+    if data["buy"]:
+        if game_state.game_state["money"] >= cost:
+            game_state.game_state["money"] -= cost
+            game_state.game_state["producers"]["39th street owned"] += 1
+            game_state.game_state["producers"]["$PerSec"] += 1
+            game_state.game_state["money_per_sec"] += 1
+            game_state.game_state["producers"]["cost"] = int(cost * 1.15)
+    
+    return jsonify({"status": "success", "message": "39th Street button click received successfully."})
+
+@app.route('/get_money_per_sec_info_from_py', methods=['GET'])
+def get_money_per_sec_info_from_py():
+    return jsonify({"money_per_sec": game_state.game_state["money_per_sec"]})
 
 #---Closing app---#
 
