@@ -1,5 +1,7 @@
 # Welcome to KC Clicker
 
+## Overview of the Game
+
 A Kansas City Version of Cookie Clicker where you buy locations from Kansas City
 
 ## File Overview
