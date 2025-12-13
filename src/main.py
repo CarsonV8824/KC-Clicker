@@ -64,15 +64,15 @@ def get_39th_street_button_click_from_js():
     
     data = request.get_json()
     
-    cost = game_state.game_state["producers"]["cost"]
+    cost = game_state.game_state["producers"]["39th_street"]["cost"]
     
     if data["buy"]:
         if game_state.game_state["money"] >= cost:
             game_state.game_state["money"] -= cost
-            game_state.game_state["producers"]["39th street owned"] += 1
-            game_state.game_state["producers"]["$PerSec"] += 1
+            game_state.game_state["producers"]["39th_street"]["owned"] += 1
+            game_state.game_state["producers"]["39th_street"]["$PerSec"] += 1
             game_state.game_state["money_per_sec"] += 1
-            game_state.game_state["producers"]["cost"] = int(cost * 1.15)
+            game_state.game_state["producers"]["39th_street"]["cost"] = int(cost * 1.15)
     
     return jsonify({"status": "success", "message": "39th Street button click received successfully."})
 
