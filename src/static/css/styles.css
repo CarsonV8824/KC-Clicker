@@ -44,7 +44,7 @@ body {
 .Button-container-class{
     border:black solid 2px;
     padding:10px;
-    text-align:left;
+    text-align:top left;
     background-color: rgb(200, 200, 200);
     margin: 20px;
     height:800px;
@@ -54,6 +54,15 @@ body {
     width:150px;
     height:195px;
     background-image: url("/static/images/39TH_Street.png");
+    background-size: cover;
+    border:none;
+    cursor: pointer;
+}
+
+.the-paseo-button-class {
+    width:150px;
+    height:195px;
+    background-image: url("/static/images/The_Paseo.png");
     background-size: cover;
     border:none;
     cursor: pointer;

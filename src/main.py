@@ -38,10 +38,16 @@ def main():
     header = "Welcome to KC-Clicker-Website"
     footer = "© 2025 Carson V"
 
-    producer = game_state.game_state["producers"]["39th_street"]
-    owned = producer.get("owned", 0)
-    cost = producer["cost"]
-    thirty_nine_street_button = f"39th Street owned: {owned} | Cost: {cost}"
+    thirty_nine_street_producer = game_state.game_state["producers"]["39th_street"]
+    thirty_nine_street_owned = thirty_nine_street_producer.get("owned", 0)
+    thirty_nine_street_button = thirty_nine_street_producer["cost"]
+    thirty_nine_street_button = f"39th Street owned: {thirty_nine_street_owned} | Cost: {thirty_nine_street_button}"
+
+    the_paseo_producer = game_state.game_state["producers"]["The_Paseo"]
+    the_paseo_owned = the_paseo_producer.get("owned", 0)
+    the_paseo_button = the_paseo_producer["cost"]
+    the_paseo_button = f"The Paseo owned: {the_paseo_owned} | Cost: {the_paseo_button}"
+
 
     money = game_state.game_state["money"]
     money_per_sec = game_state.game_state["money_per_sec"]
@@ -53,7 +59,8 @@ def main():
         footer=footer,
         money=money,
         money_per_sec=money_per_sec,
-        thirty_nine_street_button=thirty_nine_street_button
+        thirty_nine_street_button=thirty_nine_street_button,
+        the_paseo_button=the_paseo_button
     )
 
 #---Dice Click Info---#
@@ -84,7 +91,7 @@ def get_39th_street_button_click_from_js():
         producer["owned"] = producer.get("owned", 0) + 1
         producer["per_sec"] = producer.get("per_sec", 0) + 1
         # Recompute money_per_sec from producers or increment directly
-        game_state.game_state["money_per_sec"] += 1
+        game_state.game_state["money_per_sec"] += game_state.game_state["producers"]["39th_street"]["$PerSec"]
         producer["cost"] = int(round((cost * 1.15)))
 
     return jsonify({"status": "success", "message": "39th Street button click received successfully."})
@@ -92,6 +99,33 @@ def get_39th_street_button_click_from_js():
 @app.route("/get_39th_street_button_click_from_py")
 def get_39th_street_button_click_from_py():
     producer = game_state.game_state["producers"]["39th_street"]
+    return jsonify({
+        "owned": producer.get("owned", 0),
+        "cost": producer["cost"]
+    })
+
+#---The Paseo Button Click Info---#
+
+@app.route('/get_The_Paseo_button_click_from_js', methods=['POST'])
+def get_The_Paseo_button_click_from_js():
+    data = request.get_json(silent=True) or {}
+    cost = game_state.game_state["producers"]["The_Paseo"]["cost"]
+
+    if data.get("buy") and game_state.game_state["money"] >= cost:
+        game_state.game_state["money"] -= cost
+        # Update producer stats consistently
+        producer = game_state.game_state["producers"]["The_Paseo"]
+        producer["owned"] = producer.get("owned", 0) + 1
+        producer["per_sec"] = producer.get("per_sec", 0) + 5
+        # Recompute money_per_sec from producers or increment directly
+        game_state.game_state["money_per_sec"] += game_state.game_state["producers"]["The_Paseo"]["$PerSec"]
+        producer["cost"] = int(round((cost * 1.15)))
+
+    return jsonify({"status": "success", "message": "The Paseo button click received successfully."})
+
+@app.route("/get_The_Paseo_button_click_from_py")
+def get_The_Paseo_button_click_from_py():
+    producer = game_state.game_state["producers"]["The_Paseo"]
     return jsonify({
         "owned": producer.get("owned", 0),
         "cost": producer["cost"]

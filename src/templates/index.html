@@ -1,25 +1,49 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  <title>{{ title }}</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-    <header>
-        <h1 class="header-dice-button-class">{{ header }}</h1>
-    </header>
-    <main class="main-button-box">
-        <p id="dice-count" class="dice-count-class"><span id="money-generation-span">{{ money }}</span></p>
-        <p id="money-per-sec-span" class="dice-count-class">Money per Second: {{ money_per_sec }}</p>
-        <button id="main-click-dice-button" class="main-click-dice-button"></button>
-    </main>
-</body>
-    <main class="Button-container-class">
-        <button id="39th_street_button" class="thirty-ninth-street-button-class"></button> 
-        <span id="39th_street_info_span" class="button-label-class">{{ thirty_nine_street_button }}</span>
-    </main>
-<footer>
+  <header>
+    <h1 class="header-dice-button-class">{{ header }}</h1>
+  </header>
+
+  <main class="main-button-box">
+
+    <!-- Current money -->
+    <p class="dice-count-class">
+      <span id="money-generation-span">Money: {{ money }}</span>
+    </p>
+
+    <!-- Money per second -->
+    <p class="dice-count-class">
+      <span id="money-per-sec-span">Money per Second: {{ money_per_sec }}</span>
+    </p>
+
+    <!-- Main dice button -->
+    <button id="main-click-dice-button" class="main-click-dice-button"></button>
+  </main>
+
+  <main class="Button-container-class">
+    <!-- 39th Street -->
+    <button id="39th_street_button" class="thirty-ninth-street-button-class"></button>
+    <span id="39th_street_info_span" class="button-label-class">
+      {{ thirty_nine_street_button }}
+    </span>
+
+    <!-- The Paseo -->
+    <button id="the_Paseo_button" class="the-paseo-button-class"></button>
+    <span id="The_Paseo_info_span" class="button-label-class">
+      Owned: 0 | Cost: $0
+    </span>
+  </main>
+
+  <footer>
     <p class="footer-class">{{ footer }}</p>
-</footer>
+  </footer>
+</body>
+</html>
