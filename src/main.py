@@ -46,7 +46,7 @@ def main():
     the_paseo_producer = game_state.game_state["producers"]["The_Paseo"]
     the_paseo_owned = the_paseo_producer.get("owned", 0)
     the_paseo_button = the_paseo_producer["cost"]
-    the_paseo_button = f"The Paseo owned: {the_paseo_owned} | Cost: {the_paseo_button}"
+    the_paseo_button = f"The Paseo owned: {the_paseo_owned} | Cost: ${the_paseo_button}"
 
 
     money = game_state.game_state["money"]
@@ -116,7 +116,7 @@ def get_The_Paseo_button_click_from_js():
         # Update producer stats consistently
         producer = game_state.game_state["producers"]["The_Paseo"]
         producer["owned"] = producer.get("owned", 0) + 1
-        producer["per_sec"] = producer.get("per_sec", 0) + 5
+        producer["per_sec"] = producer.get("per_sec", 0) + 1
         # Recompute money_per_sec from producers or increment directly
         game_state.game_state["money_per_sec"] += game_state.game_state["producers"]["The_Paseo"]["$PerSec"]
         producer["cost"] = int(round((cost * 1.15)))
@@ -124,7 +124,7 @@ def get_The_Paseo_button_click_from_js():
     return jsonify({"status": "success", "message": "The Paseo button click received successfully."})
 
 @app.route("/get_The_Paseo_button_click_from_py")
-def get_The_Paseo_button_click_from_py():
+def get_the_paseo_button_click_from_py():
     producer = game_state.game_state["producers"]["The_Paseo"]
     return jsonify({
         "owned": producer.get("owned", 0),

@@ -108,7 +108,7 @@ async function updateThirtyNinthStreetInfo() {
 const thePaseoButton = document.getElementById('the_Paseo_button');
 
 thePaseoButton.addEventListener('click', () => {
-    fetch('/get_the_paseo_button_click_from_js', {
+    fetch('/get_The_Paseo_button_click_from_js', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -129,7 +129,7 @@ thePaseoButton.addEventListener('click', () => {
 const thePaseoInfoSpan = document.getElementById('The_Paseo_info_span');
 
 async function updateThePaseoInfo() {
-    fetch('/get_the_paseo_button_click_from_py', {cache: "no-cache"})
+    fetch('/get_The_Paseo_button_click_from_py', {cache: "no-cache"})
         .then(res => res.json())
         .then(data => {
             thePaseoInfoSpan.textContent = `Owned: ${data.owned} | Cost: $${data.cost}`;
