@@ -1,27 +1,33 @@
-# Welcome to KC Clicker
+# 🎲 KC Clicker
 
-## Overview of the Game
+> A Kansas City-themed idle clicker game inspired by Cookie Clicker
 
-A Kansas City Version of Cookie Clicker where you buy locations from Kansas City
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## File Overview
+## 🎮 About
 
-- src/
-  - database — SQLite storage and access
-    - [src/database/KC_Clicker.db](src/database/KC_Clicker.db)
-    - [src/database/database.py](src/database/database.py)
-  - game_logic — core game state and tick logic
-    - [src/game_logic/game_state.py](src/game_logic/game_state.py)
-    - [src/game_logic/money_generation.py](src/game_logic/money_generation.py)
-  - static — frontend assets served by Flask
-    - css: [src/static/css/styles.css](src/static/css/styles.css)
-    - images: [src/static/images/39TH_Street.png](src/static/images/39TH_Street.png)
-    - js: [src/static/js/script.js](src/static/js/script.js)
-  - templates — HTML templates
-    - [src/templates/index.html](src/templates/index.html)
-  - app entry — Flask server
-    - [src/main.py](src/main.py)
+KC Clicker is a browser-based idle clicker game where you earn money by clicking and purchasing iconic Kansas City locations. Build your Kansas City empire by investing in properties like 39th Street and The Paseo!
 
-- tests/
-  - database tests
-    - [tests/test_database.py](tests/test_database.py)
+### ✨ Features
+
+- 🖱️ **Click to earn** — Generate money with each click
+- 🏢 **Buy producers** — Purchase Kansas City locations that generate passive income
+- 💰 **Idle income** — Earn money per second based on owned properties
+- 💾 **Auto-save** — Progress automatically saves on page reload or close
+- 📊 **Real-time updates** — Live UI updates every 250ms
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package manager)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/CarsonV8824/KC-Clicker.git
+   cd KC-Clicker-Website
