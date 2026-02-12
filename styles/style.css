@@ -1,0 +1,52 @@
+.QWidget {
+    background-color: #f0f0f0;
+}
+
+.QLabel {
+    font-size: 18px;
+    color: #333;
+}
+
+.QTabWidget::pane {
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.QTabBar::tab {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+#click_button {
+    font-size: 24px;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+#click_button:hover {
+    background-color: #45a049;
+}
+
+#click_button:pressed {
+    background-color: #3e8e41;
+}
+
+.QPushButton {
+    font-size: 18px;
+    padding: 10px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.QMessageBox {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}

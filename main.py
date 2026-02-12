@@ -31,6 +31,10 @@ def main() -> int:
     print(game_state)
     app = QApplication(sys.argv)
     window = MainWindow(game_state)
+
+    with open("styles/style.css", "r") as f:
+        app.setStyleSheet(f.read())
+
     window.show()
     return app.exec(), game_state
 

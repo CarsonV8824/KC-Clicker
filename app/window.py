@@ -25,13 +25,21 @@ class MainWindow(QMainWindow):
         self.money_per_second_label = QLabel(f"Money per second: {self.game_state['money_per_second']:,}") 
         self.money_per_second_label.setAlignment(Qt.AlignCenter)
         
+
         self.button = QPushButton("Click me")
+        self.button.setObjectName("click_button")
+        self.button.setFixedSize(200, 100)
+        
         self.button.clicked.connect(self.handle_click)
+
+        button_container = QWidget()
+        button_layout = QHBoxLayout(button_container)
+        button_layout.addWidget(self.button)
 
         layout = QVBoxLayout()
         layout.addWidget(self.money_label)
         layout.addWidget(self.money_per_second_label)
-        layout.addWidget(self.button)
+        layout.addWidget(button_container)
 
         container = QWidget()
         container.setLayout(layout)
@@ -81,16 +89,23 @@ class MainWindow(QMainWindow):
     def reset_game(self) -> None:
         self.game_state["money"] = 0
         self.game_state["money_per_second"] = 0
+        self.game_state["Click"] = 1
         for house in self.game_state["houses"]:
             self.game_state["houses"][house]["owned"] = 0
             if house == "39th":
                 self.game_state["houses"][house]["price"] = 10
+                self.game_state["houses"][house]["per_second"] = 1
             elif house == "Paseo":
                 self.game_state["houses"][house]["price"] = 200
+                self.game_state["houses"][house]["per_second"] = 2
             elif house == "Wornall":
                 self.game_state["houses"][house]["price"] = 300
+                self.game_state["houses"][house]["per_second"] = 3
             elif house == "Roanoke":
                 self.game_state["houses"][house]["price"] = 400
+                self.game_state["houses"][house]["per_second"] = 4
+        for upgrade in self.game_state["upgrades"]:
+            self.game_state["upgrades"][upgrade]["owned"] = False
         self.update_money_labels()
         self.houses_tab.update_labels()
 
