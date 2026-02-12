@@ -41,9 +41,9 @@ class HousesTab(QWidget):
         btn.clicked.connect(lambda: self.on_house_click(house_name))
         row_layout.addWidget(btn)
 
-        owned_label = QLabel(f"{house_name}: {self.game_state['houses'][house_name]['owned']} owned")
+        owned_label = QLabel(f"{house_name}: {self.game_state['houses'][house_name]['owned']:,} owned")
         owned_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        price_label = QLabel(f"Price: ${self.game_state['houses'][house_name]['price']}")
+        price_label = QLabel(f"Price: ${self.game_state['houses'][house_name]['price']:,}")
         price_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
 
         self.owned_labels[house_name] = owned_label
@@ -66,5 +66,5 @@ class HousesTab(QWidget):
 
     def update_labels(self) -> None:
         for house_name in self.game_state['houses']:
-            self.owned_labels[house_name].setText(f"{house_name}: {self.game_state['houses'][house_name]['owned']} owned")
-            self.price_labels[house_name].setText(f"Price: ${self.game_state['houses'][house_name]['price']}")
+            self.owned_labels[house_name].setText(f"{house_name}: {self.game_state['houses'][house_name]['owned']:,} owned")
+            self.price_labels[house_name].setText(f"Price: ${self.game_state['houses'][house_name]['price']:,}")

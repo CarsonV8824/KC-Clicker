@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer
 
 from app.houses import HousesTab
 from app.upgrades import UpgradesTab
+from app.settings import SettingsTab
 
 
 
@@ -18,10 +19,10 @@ class MainWindow(QMainWindow):
 
         self.game_state = game_state
 
-        self.money_label = QLabel(f"Money: {self.game_state['money']}")
+        self.money_label = QLabel(f"Money: {self.game_state['money']:,}")
         self.money_label.setAlignment(Qt.AlignCenter)
 
-        self.money_per_second_label = QLabel(f"Money per second: {self.game_state['money_per_second']}") 
+        self.money_per_second_label = QLabel(f"Money per second: {self.game_state['money_per_second']:,}") 
         self.money_per_second_label.setAlignment(Qt.AlignCenter)
         
         self.button = QPushButton("Click me")
@@ -48,10 +49,16 @@ class MainWindow(QMainWindow):
         # Upgrades tab
         self.upgrades_tab = UpgradesTab(self.game_state)
         tab.addTab(self.upgrades_tab, "Upgrades")
+        self.upgrades_tab.upgrade_signal.connect(self.update_money_labels)
+
+        # Settings tab
+        self.settings_tab = SettingsTab()
+        tab.addTab(self.settings_tab, "Settings")
+        self.settings_tab.reset_signal.connect(self.reset_game)
 
         # Passive income timer
         self.income_timer = QTimer()
-        self.income_timer.setInterval(1000)  # 1 second
+        self.income_timer.setInterval(1000)  
         self.income_timer.timeout.connect(self.generate_income)
         self.income_timer.start()
 
@@ -64,11 +71,26 @@ class MainWindow(QMainWindow):
             self.update_money_labels()
 
     def handle_click(self) -> None:
-        self.game_state["money"] += 1
-        self.money_label.setText(f"Money: {self.game_state['money']}")
+        self.game_state["money"] += self.game_state["Click"]
+        self.money_label.setText(f"Money: {self.game_state['money']:,}")
 
     def update_money_labels(self) -> None:
-        self.money_label.setText(f"Money: {self.game_state['money']}")
-        self.money_per_second_label.setText(f"Money per second: {self.game_state['money_per_second']}")
+        self.money_label.setText(f"Money: {self.game_state['money']:,}")
+        self.money_per_second_label.setText(f"Money per second: {self.game_state['money_per_second']:,}")
 
+    def reset_game(self) -> None:
+        self.game_state["money"] = 0
+        self.game_state["money_per_second"] = 0
+        for house in self.game_state["houses"]:
+            self.game_state["houses"][house]["owned"] = 0
+            if house == "39th":
+                self.game_state["houses"][house]["price"] = 10
+            elif house == "Paseo":
+                self.game_state["houses"][house]["price"] = 200
+            elif house == "Wornall":
+                self.game_state["houses"][house]["price"] = 300
+            elif house == "Roanoke":
+                self.game_state["houses"][house]["price"] = 400
+        self.update_money_labels()
+        self.houses_tab.update_labels()
 
