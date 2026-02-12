@@ -4,6 +4,8 @@ from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QV
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import Qt, QSize, Signal, Slot
 
+import math
+
 class HousesTab(QWidget):
     purchase_signal = Signal()
     def __init__(self, game_state:dict) -> None:
@@ -56,6 +58,7 @@ class HousesTab(QWidget):
             self.game_state["money"] -= self.game_state["houses"][house_name]["price"]
             self.game_state["houses"][house_name]["owned"] += 1
             self.game_state["money_per_second"] += self.game_state["houses"][house_name]["per_second"]
+            self.game_state["houses"][house_name]["price"] = math.ceil(self.game_state["houses"][house_name]["price"] * 1.15)
             self.update_labels()
             self.purchase_signal.emit()
         else:
