@@ -19,10 +19,10 @@ class MainWindow(QMainWindow):
 
         self.game_state = game_state
 
-        self.money_label = QLabel(f"Money: {self.game_state['money']:,}")
+        self.money_label = QLabel(f"Money: ${self.game_state['money']:,}")
         self.money_label.setAlignment(Qt.AlignCenter)
 
-        self.money_per_second_label = QLabel(f"Money per second: {self.game_state['money_per_second']:,}") 
+        self.money_per_second_label = QLabel(f"Money per second: ${self.game_state['money_per_second']:,}") 
         self.money_per_second_label.setAlignment(Qt.AlignCenter)
         
 
@@ -80,11 +80,11 @@ class MainWindow(QMainWindow):
 
     def handle_click(self) -> None:
         self.game_state["money"] += self.game_state["Click"]
-        self.money_label.setText(f"Money: {self.game_state['money']:,}")
+        self.money_label.setText(f"Money: ${self.game_state['money']:,}")
 
     def update_money_labels(self) -> None:
-        self.money_label.setText(f"Money: {self.game_state['money']:,}")
-        self.money_per_second_label.setText(f"Money per second: {self.game_state['money_per_second']:,}")
+        self.money_label.setText(f"Money: ${self.game_state['money']:,}")
+        self.money_per_second_label.setText(f"Money per second: ${self.game_state['money_per_second']:,}")
 
     def reset_game(self) -> None:
         self.game_state["money"] = 0
@@ -108,4 +108,4 @@ class MainWindow(QMainWindow):
             self.game_state["upgrades"][upgrade]["owned"] = False
         self.update_money_labels()
         self.houses_tab.update_labels()
-
+        self.upgrades_tab.update_buttons()

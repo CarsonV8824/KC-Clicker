@@ -15,9 +15,19 @@
 .QTabBar::tab {
     background-color: #e0e0e0;
     border: 1px solid #ccc;
+    color: white;
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
+}
+
+.QTabBar::tab:selected {
+    color: #e0e0e0;
+}
+
+.QTabBar::tab:hover {
+    background-color: #d5d5d5;
+    color: white;
 }
 
 #click_button {
@@ -31,6 +41,7 @@
 
 #click_button:hover {
     background-color: #45a049;
+    color:white;
 }
 
 #click_button:pressed {
@@ -52,6 +63,12 @@
 
 .QPushButton:pressed {
     background-color: #c0c0c0;
+}
+
+.QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+    border: 1px solid #ccc;
 }
 
 .QMessageBox {

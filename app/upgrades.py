@@ -1,6 +1,6 @@
 import sys
 
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QTabWidget, QToolButton, QScrollArea, QSizePolicy, QGridLayout
+from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QTabWidget, QToolButton, QScrollArea, QSizePolicy, QGridLayout, QMessageBox
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer
 
@@ -10,6 +10,8 @@ class UpgradesTab(QWidget):
         super().__init__()
 
         self.game_state = game_state
+
+        self.upgrades:dict[str, QToolButton] = {}
 
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignLeft | Qt.AlignTop)
@@ -46,6 +48,8 @@ class UpgradesTab(QWidget):
         row_layout.addWidget(upgrade_label)
         layout.addLayout(row_layout)
 
+        self.upgrades[upgrade_name] = btn
+
     def on_upgrade_click(self, upgrade_name:str, price:int) -> None:
         if self.game_state["money"] >= price and not self.game_state["upgrades"][upgrade_name]["owned"]:
             
@@ -54,11 +58,27 @@ class UpgradesTab(QWidget):
                 self.game_state["upgrades"][upgrade_name]["owned"] = True
                 self.game_state["Click"] *= 2
                 self.upgrade_signal.emit()
+                return
             else:
                 self.game_state["money"] -= price
                 self.game_state["upgrades"][upgrade_name]["owned"] = True
                 self.game_state["houses"][upgrade_name.split()[0]]["per_second"] *= 2
                 self.game_state["money_per_second"] += self.game_state["houses"][upgrade_name.split()[0]]["owned"] * self.game_state["houses"][upgrade_name.split()[0]]["per_second"] // 2
+
+                self.upgrades[upgrade_name].setEnabled(False)
                 self.upgrade_signal.emit()
+                return
+
+        if self.game_state["upgrades"][upgrade_name]["owned"]:
+            QMessageBox.information(self, "Upgrade already owned", "You have already purchased this upgrade.")
+        elif self.game_state["money"] < price:
+            QMessageBox.warning(self, "Not enough money", "You do not have enough money to buy this upgrade.")
+
+    def update_buttons(self) -> None:
+        for upgrade_name in self.game_state['upgrades']:
+            if self.game_state["upgrades"][upgrade_name]["owned"]:
+                self.upgrades[upgrade_name].setEnabled(False)
+            else:
+                self.upgrades[upgrade_name].setEnabled(True)
             
                 

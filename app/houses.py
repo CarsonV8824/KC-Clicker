@@ -12,8 +12,8 @@ class HousesTab(QWidget):
         super().__init__()
 
         self.game_state = game_state
-        self.owned_labels = {}
-        self.price_labels = {}
+        self.owned_labels:dict[str, QLabel] = {}
+        self.price_labels:dict[str, QLabel] = {}
 
         self.house_layout = QVBoxLayout()
         self.setLayout(self.house_layout)

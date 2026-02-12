@@ -24,8 +24,6 @@ def save_game_state(game_state: dict) -> None:
     with Database() as db:
         db.add_game_state(game_state)
 
-
-
 def main() -> int:
     game_state = load_game_state()
     print(game_state)

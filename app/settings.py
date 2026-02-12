@@ -11,9 +11,11 @@ class SettingsTab(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         self.setLayout(layout)
 
         reset_button = QPushButton("Reset Game")
+        reset_button.setFixedSize(200, 50)
         reset_button.clicked.connect(self.on_reset_click)
         layout.addWidget(reset_button)
 
