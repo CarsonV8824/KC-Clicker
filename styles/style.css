@@ -40,10 +40,18 @@
 .QPushButton {
     font-size: 18px;
     padding: 10px;
-    background-color: #2196F3;
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
     color: white;
-    border: none;
     border-radius: 5px;
+}
+
+.QPushButton:hover {
+    background-color: #d5d5d5;
+}
+
+.QPushButton:pressed {
+    background-color: #c0c0c0;
 }
 
 .QMessageBox {
