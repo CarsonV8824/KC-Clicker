@@ -36,15 +36,18 @@ class UpgradesTab(QWidget):
     def add_upgrade_row(self, layout:QVBoxLayout, upgrade_name:str, price:int) -> None:
         row_layout = QHBoxLayout()
         btn = QToolButton()
-        if upgrade_name.count("house" or "House") > 0:
+        if upgrade_name.count("house") > 0 or upgrade_name.count("House") > 0:
             btn.setIcon(QIcon(f"images/house.png"))
             btn.setIconSize(QSize(125, 125))
-        elif upgrade_name.count("hotel" or "Hotel") > 0:
+        elif upgrade_name.count("hotel") > 0 or upgrade_name.count("Hotel") > 0:
             btn.setIcon(QIcon(f"images/hotel.png"))
+            btn.setIconSize(QSize(125, 125))
+        elif upgrade_name.count("Clicked") > 0:
+            btn.setIcon(QIcon(f"images/clicker.png"))
             btn.setIconSize(QSize(125, 125))
         btn.setFixedSize(125, 125)
         btn.clicked.connect(lambda: self.on_upgrade_click(upgrade_name, price))
-        upgrade_label = QLabel(f"Buy {upgrade_name} for ${price}")
+        upgrade_label = QLabel(f"Buy {upgrade_name} for ${price:,}")
         upgrade_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         row_layout.addWidget(btn)
         row_layout.addWidget(upgrade_label)
@@ -59,6 +62,7 @@ class UpgradesTab(QWidget):
                 self.game_state["money"] -= price
                 self.game_state["upgrades"][upgrade_name]["owned"] = True
                 self.game_state["Click"] *= 2
+                self.upgrades[upgrade_name].setEnabled(False)
                 self.upgrade_signal.emit()
                 return
             else:

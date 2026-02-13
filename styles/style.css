@@ -41,7 +41,7 @@
 
 #click_button:hover {
     background-color: #45a049;
-    color:white;
+    border: 1px solid #ccc;
 }
 
 #click_button:pressed {
@@ -59,6 +59,7 @@
 
 .QPushButton:hover {
     background-color: #d5d5d5;
+    color: black;
 }
 
 .QPushButton:pressed {

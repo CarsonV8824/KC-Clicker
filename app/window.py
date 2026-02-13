@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer
 
 from app.houses import HousesTab
 from app.upgrades import UpgradesTab
+from app.achievements import AchievementsTab
 from app.settings import SettingsTab
 
 
@@ -15,7 +16,7 @@ class MainWindow(QMainWindow):
     def __init__(self, game_state:dict) -> None:
         super().__init__()
         self.setWindowTitle("KC Clicker")
-        self.resize(420, 240)
+        self.resize(450, 600)
 
         self.game_state = game_state
 
@@ -26,9 +27,11 @@ class MainWindow(QMainWindow):
         self.money_per_second_label.setAlignment(Qt.AlignCenter)
         
 
-        self.button = QPushButton("Click me")
+        self.button = QPushButton()
+        self.button.setIcon(QIcon("images/dollar.png"))
+        self.button.setIconSize(QSize(200, 220))
         self.button.setObjectName("click_button")
-        self.button.setFixedSize(200, 100)
+        self.button.setFixedSize(200, 200)
         
         self.button.clicked.connect(self.handle_click)
 
@@ -58,6 +61,10 @@ class MainWindow(QMainWindow):
         self.upgrades_tab = UpgradesTab(self.game_state)
         tab.addTab(self.upgrades_tab, "Upgrades")
         self.upgrades_tab.upgrade_signal.connect(self.update_money_labels)
+
+        # Achievements tab
+        self.achievements_tab = AchievementsTab(self.game_state)
+        tab.addTab(self.achievements_tab, "Achievements")
 
         # Settings tab
         self.settings_tab = SettingsTab()
