@@ -21,7 +21,7 @@ class Database:
         self.cursor.execute("INSERT INTO users (game_state) VALUES (?)", (json.dumps(game_state),))
         self.connection.commit()
 
-    def get_game_state(self):
+    def get_game_state(self) -> dict:
         self.cursor.execute("SELECT game_state FROM users WHERE id = (SELECT MAX(id) FROM users)")
         result = self.cursor.fetchone()
         return json.loads(result[0]) if result else None
@@ -40,17 +40,18 @@ class Database:
 
     @staticmethod
     def load_game_state() -> dict:
-        orginal_game_state = game_state()
+        loaded_game_state = game_state()
         try:
             with Database() as db:
                 data = db.get_game_state()
                 if data:
-                    return data
+                    loaded_game_state.update(data)
+                    return loaded_game_state
                 else:
-                    return orginal_game_state
+                    return loaded_game_state
         except Exception as e:
             print(f"Error loading game state: {e}")
-            return orginal_game_state
+            return loaded_game_state
         
     @staticmethod
     def save_game_state(game_state: dict) -> None:
