@@ -1,6 +1,8 @@
 import sqlite3
 import json
 
+from database.game_state import game_state
+
 class Database:
 
     def __init__(self, db_file="database/KC-Clicker.db"):
@@ -35,3 +37,22 @@ class Database:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.close()
+
+    @staticmethod
+    def load_game_state() -> dict:
+        orginal_game_state = game_state()
+        try:
+            with Database() as db:
+                data = db.get_game_state()
+                if data:
+                    return data
+                else:
+                    return orginal_game_state
+        except Exception as e:
+            print(f"Error loading game state: {e}")
+            return orginal_game_state
+        
+    @staticmethod
+    def save_game_state(game_state: dict) -> None:
+        with Database() as db:
+            db.add_game_state(game_state)
