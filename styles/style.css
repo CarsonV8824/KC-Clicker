@@ -76,3 +76,11 @@
     background-color: #fff;
     border: 1px solid #ccc;
 }
+
+QToolTip {
+    background-color: #999;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 14px;
+}

@@ -1,15 +1,15 @@
 import sys
 
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QTabWidget, QToolButton, QScrollArea, QSizePolicy, QGridLayout
-from PySide6.QtGui import QIcon, QPixmap
-from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer
+from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QTabWidget, QToolButton, QScrollArea, QSizePolicy, QGridLayout, QToolTip, QMessageBox
+from PySide6.QtGui import QIcon, QPixmap, QCursor
+from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer, QPoint, QRect
 
 from app.houses import HousesTab
 from app.upgrades import UpgradesTab
 from app.achievements import AchievementsTab
 from app.settings import SettingsTab
 
-
+from database.game_state import game_state
 
 class MainWindow(QMainWindow):
     
@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         self.button.setObjectName("click_button")
         self.button.setFixedSize(200, 200)
         
-        self.button.clicked.connect(self.handle_click)
+        self.button.mousePressEvent = self.handle_click
 
         button_container = QWidget()
         button_layout = QHBoxLayout(button_container)
@@ -85,34 +85,28 @@ class MainWindow(QMainWindow):
             self.income_timer.start()
             self.update_money_labels()
 
-    def handle_click(self) -> None:
+    def handle_click(self, event) -> None:
         self.game_state["money"] += self.game_state["Click"]
         self.money_label.setText(f"Money: ${self.game_state['money']:,}")
+
+        text = f"+${self.game_state['Click']:,}"
+
+        # show tooltip exactly where the user clicked
+        click_global = event.globalPosition().toPoint()  # PySide6
+        QToolTip.showText(click_global, text, self.button, self.button.rect(), 1500)
+        # keep normal button behavior
+        self.button.click()
+        
 
     def update_money_labels(self) -> None:
         self.money_label.setText(f"Money: ${self.game_state['money']:,}")
         self.money_per_second_label.setText(f"Money per second: ${self.game_state['money_per_second']:,}")
 
     def reset_game(self) -> None:
-        self.game_state["money"] = 0
-        self.game_state["money_per_second"] = 0
-        self.game_state["Click"] = 1
-        for house in self.game_state["houses"]:
-            self.game_state["houses"][house]["owned"] = 0
-            if house == "39th":
-                self.game_state["houses"][house]["price"] = 10
-                self.game_state["houses"][house]["per_second"] = 1
-            elif house == "Paseo":
-                self.game_state["houses"][house]["price"] = 200
-                self.game_state["houses"][house]["per_second"] = 2
-            elif house == "Wornall":
-                self.game_state["houses"][house]["price"] = 300
-                self.game_state["houses"][house]["per_second"] = 3
-            elif house == "Roanoke":
-                self.game_state["houses"][house]["price"] = 400
-                self.game_state["houses"][house]["per_second"] = 4
-        for upgrade in self.game_state["upgrades"]:
-            self.game_state["upgrades"][upgrade]["owned"] = False
+        default_game_state = game_state()
+        self.game_state.clear()
+        self.game_state.update(default_game_state)
+
         self.update_money_labels()
         self.houses_tab.update_labels()
         self.upgrades_tab.update_buttons()

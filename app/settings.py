@@ -14,6 +14,11 @@ class SettingsTab(QWidget):
         layout.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         self.setLayout(layout)
 
+        update_button = QPushButton("Update Game")
+        update_button.setFixedSize(200, 50)
+        update_button.clicked.connect(self.on_update_click)
+        layout.addWidget(update_button)
+
         reset_button = QPushButton("Reset Game")
         reset_button.setFixedSize(200, 50)
         reset_button.clicked.connect(self.on_reset_click)
@@ -23,3 +28,6 @@ class SettingsTab(QWidget):
         confirm = QMessageBox.question(self, "Confirm Reset", "Are you sure you want to reset your game? This cannot be undone.", QMessageBox.Yes | QMessageBox.No)
         if confirm == QMessageBox.Yes:
             self.reset_signal.emit()
+
+    def on_update_click(self):
+        QMessageBox.information(self, "Update Game", "To update the game, please download the latest version from the GitHub repository: https://github.com/CarsonV8824/KC-Clicker")
