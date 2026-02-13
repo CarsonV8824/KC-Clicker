@@ -10,7 +10,7 @@ class HousesTab(QWidget):
     purchase_signal = Signal()
     def __init__(self, game_state:dict) -> None:
         super().__init__()
-
+        
         self.game_state = game_state
         self.owned_labels:dict[str, QLabel] = {}
         self.price_labels:dict[str, QLabel] = {}

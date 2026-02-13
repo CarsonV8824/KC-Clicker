@@ -31,6 +31,8 @@ class UpgradesTab(QWidget):
             print(f"Adding {upgrade_name} row")
             self.add_upgrade_row(scroll_layout, upgrade_name, self.game_state['upgrades'][upgrade_name]['price'])
 
+        self.update_buttons()
+
     def add_upgrade_row(self, layout:QVBoxLayout, upgrade_name:str, price:int) -> None:
         row_layout = QHBoxLayout()
         btn = QToolButton()
