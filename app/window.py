@@ -12,7 +12,7 @@ from app.settings import SettingsTab
 from database.game_state import game_state
 
 class MainWindow(QMainWindow):
-    
+    achievement_signal = Signal()
     def __init__(self, game_state:dict) -> None:
         super().__init__()
         self.setWindowTitle("KC Clicker")
@@ -65,6 +65,9 @@ class MainWindow(QMainWindow):
         # Achievements tab
         self.achievements_tab = AchievementsTab(self.game_state)
         tab.addTab(self.achievements_tab, "Achievements")
+        self.upgrades_tab.upgrade_signal.connect(self.achievement_signal)
+        self.houses_tab.purchase_signal.connect(self.achievement_signal)
+        self.achievement_signal.connect(self.achievements_tab.update_achievements)
 
         # Settings tab
         self.settings_tab = SettingsTab()
@@ -79,14 +82,19 @@ class MainWindow(QMainWindow):
 
     def generate_income(self) -> None:
         if self.game_state["money_per_second"] > 0:
+            self.achievement_signal.emit()
             self.game_state["money"] += 1
+            self.game_state["total_money"] += 1
             self.income_timer.stop()
             self.income_timer.setInterval(1000/ (self.game_state["money_per_second"]))
             self.income_timer.start()
             self.update_money_labels()
 
     def handle_click(self, event) -> None:
+        self.game_state["total_clicks"] += 1
+        self.achievement_signal.emit()
         self.game_state["money"] += self.game_state["Click"]
+        self.game_state["total_money"] += self.game_state["Click"]
         self.money_label.setText(f"Money: ${self.game_state['money']:,}")
 
         text = f"+${self.game_state['Click']:,}"
@@ -99,6 +107,7 @@ class MainWindow(QMainWindow):
         
 
     def update_money_labels(self) -> None:
+        self.achievement_signal.emit()
         self.money_label.setText(f"Money: ${self.game_state['money']:,}")
         self.money_per_second_label.setText(f"Money per second: ${self.game_state['money_per_second']:,}")
 
@@ -110,3 +119,4 @@ class MainWindow(QMainWindow):
         self.update_money_labels()
         self.houses_tab.update_labels()
         self.upgrades_tab.update_buttons()
+        self.achievement_signal.emit()

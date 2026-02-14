@@ -4,6 +4,8 @@ from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QV
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer
 
+import math
+
 class UpgradesTab(QWidget):
     upgrade_signal = Signal()
     def __init__(self, game_state:dict) -> None:
@@ -45,7 +47,7 @@ class UpgradesTab(QWidget):
         elif upgrade_name.count("Clicked") > 0:
             btn.setIcon(QIcon(f"images/clicker.png"))
             btn.setIconSize(QSize(125, 125))
-        btn.setFixedSize(125, 125)
+        btn.setFixedSize(150, 150)
         btn.clicked.connect(lambda: self.on_upgrade_click(upgrade_name, price))
         upgrade_label = QLabel(f"Buy {upgrade_name} for ${price:,}")
         upgrade_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
@@ -61,22 +63,28 @@ class UpgradesTab(QWidget):
             if upgrade_name == "Clicked":
                 self.game_state["money"] -= price
                 self.game_state["upgrades"][upgrade_name]["owned"] = True
-                self.game_state["Click"] *= 2
+                self.game_state["Click"] += 1
                 self.upgrades[upgrade_name].setEnabled(False)
                 self.upgrade_signal.emit()
                 return
+            elif upgrade_name == "Per Sec Clicked Bonus":
+                self.game_state["money"] -= price
+                self.game_state["upgrades"][upgrade_name]["owned"] = True
+                self.game_state["Click"] += sum(math.ceil(self.game_state["houses"][house]["owned"] * self.game_state["houses"][house]["per_second"] * 0.05) for house in self.game_state["houses"])
+                self.upgrades[upgrade_name].setEnabled(False)
             else:
                 self.game_state["money"] -= price
                 self.game_state["upgrades"][upgrade_name]["owned"] = True
                 self.game_state["houses"][upgrade_name.split()[0]]["per_second"] *= 2
                 self.game_state["money_per_second"] += self.game_state["houses"][upgrade_name.split()[0]]["owned"] * self.game_state["houses"][upgrade_name.split()[0]]["per_second"] // 2
 
+                if self.game_state["upgrades"]["Per Sec Clicked Bonus"]["owned"]:
+                    self.game_state["Click"] = sum(math.ceil(self.game_state["houses"][house]["owned"] * self.game_state["houses"][house]["per_second"] * 0.05) for house in self.game_state["houses"])
+
                 self.upgrades[upgrade_name].setEnabled(False)
                 self.upgrade_signal.emit()
                 return
 
-        if self.game_state["upgrades"][upgrade_name]["owned"]:
-            QMessageBox.information(self, "Upgrade already owned", "You have already purchased this upgrade.")
         elif self.game_state["money"] < price:
             QMessageBox.warning(self, "Not enough money", "You do not have enough money to buy this upgrade.")
 

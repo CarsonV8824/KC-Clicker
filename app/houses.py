@@ -37,7 +37,7 @@ class HousesTab(QWidget):
         btn = QToolButton()
         btn.setIcon(QIcon(f"images/{house_name.lower().replace(' ', '_')}.png"))
         btn.setIconSize(QSize(125, 125))
-        btn.setFixedSize(125, 125)
+        btn.setFixedSize(150, 150)
         btn.clicked.connect(lambda: self.on_house_click(house_name))
         row_layout.addWidget(btn)
 
@@ -55,6 +55,10 @@ class HousesTab(QWidget):
 
     def on_house_click(self, house_name:str) -> None:
         if self.game_state["money"] >= self.game_state["houses"][house_name]["price"]:
+
+            if self.game_state["upgrades"]["Per Sec Clicked Bonus"]["owned"]:
+                self.game_state["Click"] = sum(math.ceil(self.game_state["houses"][house]["owned"] * self.game_state["houses"][house]["per_second"] * 0.05) for house in self.game_state["houses"])
+
             self.game_state["money"] -= self.game_state["houses"][house_name]["price"]
             self.game_state["houses"][house_name]["owned"] += 1
             self.game_state["money_per_second"] += self.game_state["houses"][house_name]["per_second"]
