@@ -1,20 +1,25 @@
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
-import sys
+import sys, os
 
 from app.window import MainWindow
 from database.db import Database
+
+def get_image_path(image_name:str) -> str:
+    if image_name == "style.css":
+        return os.path.join("styles", "style.css")
+    return os.path.join("images", image_name)
 
 def main() -> int:
     game_state = Database.load_game_state()
     app = QApplication(sys.argv)
     window = MainWindow(game_state)
 
-    with open("styles/style.css", "r") as f:
+    with open(get_image_path("style.css"), "r") as f:
         app.setStyleSheet(f.read())
 
     app.setApplicationName("KC Clicker")
-    app.setWindowIcon(QIcon("images/dollar.png"))
+    app.setWindowIcon(QIcon(get_image_path("dollar.png")))
 
     window.show()
     return app.exec(), game_state
