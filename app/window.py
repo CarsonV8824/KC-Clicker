@@ -9,7 +9,9 @@ from app.upgrades import UpgradesTab
 from app.achievements import AchievementsTab
 from app.settings import SettingsTab
 
-from database.game_state import game_state
+from database.db import Database
+
+import os
 
 class MainWindow(QMainWindow):
     achievement_signal = Signal()
@@ -28,7 +30,7 @@ class MainWindow(QMainWindow):
         
 
         self.button = QPushButton()
-        self.button.setIcon(QIcon("images/dollar.png"))
+        self.button.setIcon(QIcon(self.get_image_path("dollar.png")))
         self.button.setIconSize(QSize(200, 220))
         self.button.setObjectName("click_button")
         self.button.setFixedSize(200, 200)
@@ -112,7 +114,7 @@ class MainWindow(QMainWindow):
         self.money_per_second_label.setText(f"Money per second: ${self.game_state['money_per_second']:,}")
 
     def reset_game(self) -> None:
-        default_game_state = game_state()
+        default_game_state = Database.reset_db()
         self.game_state.clear()
         self.game_state.update(default_game_state)
 
@@ -120,3 +122,7 @@ class MainWindow(QMainWindow):
         self.houses_tab.update_labels()
         self.upgrades_tab.update_buttons()
         self.achievement_signal.emit()
+
+    @staticmethod
+    def get_image_path(image_name:str) -> str:
+        return os.path.join("images", image_name)

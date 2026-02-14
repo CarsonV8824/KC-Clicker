@@ -1,11 +1,13 @@
 import sqlite3
 import json
+import os
 
 from database.game_state import game_state
 
 class Database:
 
-    def __init__(self, db_file="database/KC-Clicker.db"):
+    def __init__(self):
+        db_file=self.get_db_path()
         self.connection = sqlite3.connect(db_file)
         self.cursor = self.connection.cursor()
         self.__make_table()
@@ -26,6 +28,10 @@ class Database:
         result = self.cursor.fetchone()
         return json.loads(result[0]) if result else None
     
+    def delete_game_state(self) -> None:
+        self.cursor.execute("DELETE FROM users")
+        self.connection.commit()
+    
     def close(self):
         self.connection.close()
 
@@ -37,6 +43,15 @@ class Database:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.close()
+
+    @staticmethod
+    def get_db_path() -> str:
+        return os.path.join("database", "KC-Clicker.db")
+    
+    @staticmethod
+    def reset_db() -> dict:
+        os.remove(Database.get_db_path())
+        return game_state()
 
     @staticmethod
     def load_game_state() -> dict:

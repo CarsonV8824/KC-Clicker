@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QV
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import Qt, QSize, Signal, Slot, QTimer
 
-import math
+import math, os
 
 class UpgradesTab(QWidget):
     upgrade_signal = Signal()
@@ -39,13 +39,13 @@ class UpgradesTab(QWidget):
         row_layout = QHBoxLayout()
         btn = QToolButton()
         if upgrade_name.count("house") > 0 or upgrade_name.count("House") > 0:
-            btn.setIcon(QIcon(f"images/house.png"))
+            btn.setIcon(QIcon(self.get_image_path("house.png")))
             btn.setIconSize(QSize(125, 125))
         elif upgrade_name.count("hotel") > 0 or upgrade_name.count("Hotel") > 0:
-            btn.setIcon(QIcon(f"images/hotel.png"))
+            btn.setIcon(QIcon(self.get_image_path("hotel.png")))
             btn.setIconSize(QSize(125, 125))
         elif upgrade_name.count("Clicked") > 0:
-            btn.setIcon(QIcon(f"images/clicker.png"))
+            btn.setIcon(QIcon(self.get_image_path("clicker.png")))
             btn.setIconSize(QSize(125, 125))
         btn.setFixedSize(150, 150)
         btn.clicked.connect(lambda: self.on_upgrade_click(upgrade_name, price))
@@ -94,5 +94,9 @@ class UpgradesTab(QWidget):
                 self.upgrades[upgrade_name].setEnabled(False)
             else:
                 self.upgrades[upgrade_name].setEnabled(True)
+
+    @staticmethod
+    def get_image_path(image_name:str) -> str:
+        return os.path.join("images", image_name)
             
                 

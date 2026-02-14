@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QV
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtCore import Qt, QSize, Signal, Slot
 
-import math
+import math, os
 
 class HousesTab(QWidget):
     purchase_signal = Signal()
@@ -35,7 +35,7 @@ class HousesTab(QWidget):
     def add_house_row(self, layout:QVBoxLayout, house_name:str) -> None:
         row_layout = QHBoxLayout()
         btn = QToolButton()
-        btn.setIcon(QIcon(f"images/{house_name.lower().replace(' ', '_')}.png"))
+        btn.setIcon(QIcon(self.get_image_path(f"{house_name.lower().replace(' ', '_')}.png")))
         btn.setIconSize(QSize(125, 125))
         btn.setFixedSize(150, 150)
         btn.clicked.connect(lambda: self.on_house_click(house_name))
@@ -72,3 +72,7 @@ class HousesTab(QWidget):
         for house_name in self.game_state['houses']:
             self.owned_labels[house_name].setText(f"{house_name}: {self.game_state['houses'][house_name]['owned']:,} owned")
             self.price_labels[house_name].setText(f"Price: ${self.game_state['houses'][house_name]['price']:,}")
+
+    @staticmethod
+    def get_image_path(image_name:str) -> str:
+        return os.path.join("images", image_name)
