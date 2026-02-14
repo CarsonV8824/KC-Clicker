@@ -74,5 +74,7 @@ class HousesTab(QWidget):
             self.price_labels[house_name].setText(f"Price: ${self.game_state['houses'][house_name]['price']:,}")
 
     @staticmethod
-    def get_image_path(image_name:str) -> str:
+    def get_image_path(image_name: str) -> str:
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, "images", image_name)
         return os.path.join("images", image_name)

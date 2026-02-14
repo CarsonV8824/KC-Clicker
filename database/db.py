@@ -1,6 +1,7 @@
 import sqlite3
 import json
 import os
+import sys
 
 from database.game_state import game_state
 
@@ -35,9 +36,6 @@ class Database:
     def close(self):
         self.connection.close()
 
-    def __del__(self):
-        self.connection.close()
-
     def __enter__(self):
         return self
 
@@ -46,7 +44,12 @@ class Database:
 
     @staticmethod
     def get_db_path() -> str:
-        return os.path.join("database", "KC-Clicker.db")
+        if hasattr(sys, '_MEIPASS'):
+            # Save to user's app data folder so it persists
+            app_data = os.path.join(os.path.expanduser("~"), "KC-Clicker")
+            os.makedirs(app_data, exist_ok=True)
+            return os.path.join(app_data, "KC-Clicker.db")
+        return os.path.join(os.path.dirname(__file__), "KC-Clicker.db")
     
     @staticmethod
     def reset_db() -> dict:

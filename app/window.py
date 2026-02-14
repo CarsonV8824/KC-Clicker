@@ -124,5 +124,7 @@ class MainWindow(QMainWindow):
         self.achievement_signal.emit()
 
     @staticmethod
-    def get_image_path(image_name:str) -> str:
+    def get_image_path(image_name: str) -> str:
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, "images", image_name)
         return os.path.join("images", image_name)

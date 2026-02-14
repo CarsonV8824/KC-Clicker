@@ -4,11 +4,18 @@ import sys, os
 
 from app.window import MainWindow
 from database.db import Database
+import sys, os
 
-def get_image_path(image_name:str) -> str:
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+def get_image_path(image_name: str) -> str:
     if image_name == "style.css":
-        return os.path.join("styles", "style.css")
-    return os.path.join("images", image_name)
+        return resource_path(os.path.join("styles", "style.css"))
+    return resource_path(os.path.join("images", image_name))
 
 def main() -> int:
     game_state = Database.load_game_state()
