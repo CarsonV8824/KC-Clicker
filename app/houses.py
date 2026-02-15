@@ -56,13 +56,14 @@ class HousesTab(QWidget):
     def on_house_click(self, house_name:str) -> None:
         if self.game_state["money"] >= self.game_state["houses"][house_name]["price"]:
 
-            if self.game_state["upgrades"]["Per Sec Clicked Bonus"]["owned"]:
-                self.game_state["Click"] = sum(math.ceil(self.game_state["houses"][house]["owned"] * self.game_state["houses"][house]["per_second"] * 0.05) for house in self.game_state["houses"])
-
             self.game_state["money"] -= self.game_state["houses"][house_name]["price"]
             self.game_state["houses"][house_name]["owned"] += 1
             self.game_state["money_per_second"] += self.game_state["houses"][house_name]["per_second"]
             self.game_state["houses"][house_name]["price"] = math.ceil(self.game_state["houses"][house_name]["price"] * 1.15)
+
+            if self.game_state["upgrades"]["Per Sec Clicked Bonus"]["owned"]:
+                self.game_state["Click"] = sum(math.ceil(self.game_state["houses"][house]["owned"] * self.game_state["houses"][house]["per_second"] * 0.05) for house in self.game_state["houses"])
+            
             self.update_labels()
             self.purchase_signal.emit()
         else:

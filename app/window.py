@@ -12,6 +12,7 @@ from app.settings import SettingsTab
 from database.db import Database
 
 import os
+import time
 
 class MainWindow(QMainWindow):
     achievement_signal = Signal()
@@ -78,19 +79,31 @@ class MainWindow(QMainWindow):
 
         # Passive income timer
         self.income_timer = QTimer()
-        self.income_timer.setInterval(1000)  
+        self.income_timer.setInterval(50)
         self.income_timer.timeout.connect(self.generate_income)
+        self._last_income_time = time.perf_counter()
+        self._pending_income = 0.0
         self.income_timer.start()
 
     def generate_income(self) -> None:
-        if self.game_state["money_per_second"] > 0:
-            self.achievement_signal.emit()
-            self.game_state["money"] += 1
-            self.game_state["total_money"] += 1
-            self.income_timer.stop()
-            self.income_timer.setInterval(1000/ (self.game_state["money_per_second"]))
-            self.income_timer.start()
-            self.update_money_labels()
+        now = time.perf_counter()
+        elapsed_seconds = now - self._last_income_time
+        self._last_income_time = now
+
+        money_per_second = self.game_state["money_per_second"]
+        if money_per_second <= 0:
+            return
+
+        self._pending_income += elapsed_seconds * money_per_second
+        income_to_add = int(self._pending_income)
+        if income_to_add <= 0:
+            return
+
+        self._pending_income -= income_to_add
+        self.achievement_signal.emit()
+        self.game_state["money"] += income_to_add
+        self.game_state["total_money"] += income_to_add
+        self.update_money_labels()
 
     def handle_click(self, event) -> None:
         self.game_state["total_clicks"] += 1
